@@ -1,0 +1,15 @@
+{
+  "name": "little-log-scan",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dist-debug":  "",
+    "dist-release": "",
+    "run": ""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
