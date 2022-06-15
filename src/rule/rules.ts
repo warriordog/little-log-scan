@@ -7,13 +7,6 @@ import {Rule} from "./rule.js";
  */
 export const allRules: readonly Rule[] = [
     {
-        // Expanded list from https://stackoverflow.com/a/4669755
-        // 2022-06-10: URLs can contain []
-        name: 'Exploit/Traversal',
-        match: cleaned => cleaned.matchAll(/[A-Za-z\d\-._~!$&'()*+,;=:@\/?\[\]]*\/\.\.\/[A-Za-z\d\-._~!$&'()*+,;=:@\/?\[\]]*/g)
-    },
-
-    {
         name: 'Payload/Script/PHP',
         match: cleaned => cleaned.matchAll(/<(?:\??php\b|\?=)/gi)
     },
@@ -34,7 +27,7 @@ export const allRules: readonly Rule[] = [
         match: cleaned => cleaned.matchAll(/\b(?:exec|eval)(?=[\s(])/gi)
     },
     {
-        name: 'Payload/Executable/Generic',
+        name: 'Payload/Executable/generic',
         match: cleaned => cleaned.matchAll(/\.(?:py|class|jar|war|ear|rb)\b/gi)
     },
     {
@@ -67,6 +60,12 @@ export const allRules: readonly Rule[] = [
         match: cleaned => cleaned.matchAll(/\$+\{[\w:-]*\w+[\w:-]*}/g)
     },
 
+    {
+        // Expanded list from https://stackoverflow.com/a/4669755
+        // 2022-06-10: URLs can contain []
+        name: 'Vulnerability/generic/traversal',
+        match: cleaned => cleaned.matchAll(/[A-Za-z\d\-._~!$&'()*+,;=:@\/?\[\]]*\/\.\.\/[A-Za-z\d\-._~!$&'()*+,;=:@\/?\[\]]*/g)
+    },
     {
         // See https://packetstormsecurity.com/files/130807/Ckeditor-4.4.7-Shell-Upload-Cross-Site-Scripting.html
         name: 'Vulnerability/CKEditor/v4.4.7/RCE',
@@ -275,7 +274,7 @@ export const allRules: readonly Rule[] = [
         match: cleaned => cleaned.matchAll(/Mozi\.m/g)
     },
     {
-        name: 'Malware/Webshell/Generic',
+        name: 'Malware/Webshell/generic',
         match: cleaned => cleaned.matchAll(/\/(?:\?p4yl04d=|shell\?)[\w%\-.&=\\\/]+/gi)
     },
     {

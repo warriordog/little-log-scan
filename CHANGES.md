@@ -1,5 +1,9 @@
 * 2.x.x
   * 2.0.x
+    * 2.1.4 - 2022-06-15
+      * Fix missing newline in output of `--list-rules`
+      * Normalize `/generic` rules
+      * Rename `Exploit/Traversal` to `Vulnerability/generic/traversal`
     * 2.1.3 - 2022-06-15
       * Fix bin file to allow running through npx (part 3)
     * 2.1.2 - 2022-06-15

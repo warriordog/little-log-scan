@@ -74,7 +74,7 @@ export function runListRulesCommand(output: WritableStream, args: Args): void {
     const sortedRules = rules.sort((a, b) => a.name.localeCompare(b.name));
 
     // Print all rules
-    output.write(`Matched ${sortedRules.length} rules:`);
+    output.write(`Matched ${sortedRules.length} rules:\n`);
     for (const rule of sortedRules) {
         output.write(rule.name);
         output.write('\n');
