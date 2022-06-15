@@ -1,15 +1,26 @@
 {
   "name": "little-log-scan",
-  "version": "1.0.0",
-  "description": "",
+  "version": "2.0.0",
+  "description": "Scan log files for suspicious strings",
+  "homepage": "https://github.com/warriordog/little-log-scan",
+  "bugs": "https://github.com/warriordog/little-log-scan/issues",
+  "author": "Hazel Koehler <acomputerdog@gmail.com> (https://github.com/warriordog)",
+  "repository": "github:warriordog/little-log-scan",
+  "license": "MPL-2.0",
   "main": "index.js",
+  "bin": "cli.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dist-debug":  "",
+    "dist-debug": "",
     "dist-release": "",
     "run": ""
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "keywords": [ "scan", "log" ],
+  "engines": {
+    "node": ">=16"
+  },
+  "devDependencies": {
+    "@types/node": "16.11.39",
+    "typescript": "4.7.3"
+  }
 }
