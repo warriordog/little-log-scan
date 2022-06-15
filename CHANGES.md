@@ -1,6 +1,9 @@
 * 2.x.x
   * 2.0.x
-    * 2.0.0 - 2022-06-13
+    * 2.1.0 - 2022-06-15
+      * --list-args respects --include and --exclude
+      * Fix typo in "Vulnerability/Wordpress/plugin/db-backup/v4.5/CVE-2014-9119 Arbitrary File Disclosure"
+    * 2.0.0 - 2022-06-15
       * Rewrite in TypeScript
       * New CLI system
       * Use `process.stdout` instead of `Console`

@@ -107,7 +107,7 @@ export const allRules: readonly Rule[] = [
     {
         // See https://www.exploit-db.com/exploits/35378
         // See https://nvd.nist.gov/vuln/detail/CVE-2014-9119
-        name: 'Vulneravility/Wordpress/plugin/db-backup/v4.5/CVE-2014-9119 Arbitrary File Disclosure',
+        name: 'Vulnerability/Wordpress/plugin/db-backup/v4.5/CVE-2014-9119 Arbitrary File Disclosure',
         match: cleaned => cleaned.matchAll(/\/wp-content\/plugins\/db-backup\/download\.php/gi)
     },
     {
