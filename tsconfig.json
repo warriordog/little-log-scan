@@ -4,13 +4,16 @@
     "moduleResolution": "node",
     "target": "ES2021",
     "lib": [ "ES2021" ],
-
-    "sourceMap": true,
-    "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
     "incremental": true,
+    "esModuleInterop": true,
+
     "outDir": "dist/package",
+    "sourceMap": true,
+    "inlineSources": true,
+    "forceConsistentCasingInFileNames": true,
+    "removeComments": true,
+    "declaration": true,
 
     "strict": true,
     "useUnknownInCatchVariables": false

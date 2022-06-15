@@ -5,9 +5,9 @@ Intended for webserver logs, but usable with any text-based log file.
 Lines are read from standard input, and any matches are written to standard output.
 
 ## Usage
-* Linux - `./little-log-scan.sh [options]`
-* Windows - `./little-log-scan.bat [options]`
-* Anything - `node ./little-log-scan.mjs [options]`
+* ~~Linux - `./little-log-scan.sh [options]`~~ Not implemented yet
+* ~~Windows - `./little-log-scan.bat [options]`~~ Not implemented yet
+* ~~Anything - `node ./little-log-scan.mjs [options]`~~ Not implemented yet
 
 ## Arguments
 TODO
@@ -26,7 +26,7 @@ TODO
 
 ### Please note that this is NOT security software!
 This script is a simple tool intended for research and forensic purposes.
-There is no gaurantee of accuracy or completeness.
+There is no guarantee of accuracy or completeness.
 False positives and false negatives are expected.
 The authors are not responsible for any negative impact due to use of this software.
 

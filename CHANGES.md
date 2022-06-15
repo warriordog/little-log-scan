@@ -1,5 +1,11 @@
 * 2.x.x
   * 2.0.x
+    * 2.1.3 - 2022-06-15
+      * Fix bin file to allow running through npx (part 3)
+    * 2.1.2 - 2022-06-15
+      * Fix bin file to allow running through npx (again)
+    * 2.1.1 - 2022-06-15
+      * Fix bin file to allow running through npx
     * 2.1.0 - 2022-06-15
       * --list-args respects --include and --exclude
       * Fix typo in "Vulnerability/Wordpress/plugin/db-backup/v4.5/CVE-2014-9119 Arbitrary File Disclosure"
