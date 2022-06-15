@@ -19,10 +19,10 @@
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build-package": "tsc -b",
-    "build-script": "echo \"Error: script build not implemented\" && exit 1",
+    "build": "tsc -b",
+    "build-standalone": "npm run build && util/dist-standalone.sh",
     "cli": "tsc -b && node bin/cli",
-    "prepublish": "tsc -b"
+    "prepublish": "npm run build"
   },
   "keywords": [ "scan", "log" ],
   "engines": {

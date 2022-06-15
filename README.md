@@ -9,9 +9,9 @@ Lines are read from standard input, and any matches are written to standard outp
 * Through npx: `npx little-log-scan [options]`
 * Through npm: `npm install little-log-scan && npm run cli -- [options]`
 * Standalone:
-  * ~~Linux - `./little-log-scan.sh [options]`~~ Not implemented yet
-  * ~~Windows - `./little-log-scan.bat [options]`~~ Not implemented yet
-  * ~~Anything - `node ./little-log-scan.js [options]`~~ Not implemented yet
+  * Linux - `./little-log-scan.sh [options]`
+  * Windows - `./little-log-scan.bat [options]`
+  * Anything - `node ./bin/cli [options]`
 
 ## Examples
 * Standard usage (default settings): `cat some.log | little-log-scan`
