@@ -5,7 +5,7 @@ import ReadableStream = NodeJS.ReadableStream;
 import WritableStream = NodeJS.WritableStream;
 import {Args} from "./args.js";
 import {allRules} from "../rule/rules.js";
-import {logScanVersion} from "../index.js";
+import {logScanVersion, Rule} from "../index.js";
 
 export function runCli(cliArgs: string[], input: ReadableStream = process.stdin, output: WritableStream = process.stdout): void {
     const args = new Args(cliArgs);
@@ -16,7 +16,7 @@ export function runCli(cliArgs: string[], input: ReadableStream = process.stdin,
     } else if (args.getFlag('--version')) {
         runVersionCommand(output);
     } else if (args.getFlag('--list-rules')) {
-        runListRulesCommand(output);
+        runListRulesCommand(output, args);
     } else {
         // Run normal scan process
         const scannerOpts = parseScannerOpts(args);
@@ -26,7 +26,7 @@ export function runCli(cliArgs: string[], input: ReadableStream = process.stdin,
     }
 }
 
-export function runHelpCommand(output: WritableStream) {
+export function runHelpCommand(output: WritableStream): void {
     output.write('Scans webserver log lines to detect suspicious behavior.\n')
     output.write('Logs should be piped through standard input, one line per log.\n');
     output.write('Findings will be printed to stdout, one line per finding.\n');
@@ -53,7 +53,7 @@ export function runHelpCommand(output: WritableStream) {
     output.write('Usage: find-suspicious-logs [options]\n');
     output.write('--help                 Print help and exit.\n');
     output.write('--version              Print version and exit.\n');
-    output.write('--list-rules           List all rules and exit.\n');
+    output.write('--list-rules           List all rules that are included by the specified include/exclude patterns.\n');
     output.write('--tsv                  Output in TSV (tab-delimited) format.\n');
     output.write('--cleaned=<Y/N>        Include the entire cleaned, decoded line in the output. Defaults to Y (on).\n')
     output.write('--raw=<Y/N>            Include the entire raw, un-decoded line in the output. Defaults to N (off)\n');
@@ -61,19 +61,20 @@ export function runHelpCommand(output: WritableStream) {
     output.write('--exclude=<patterns>   Patterns to exclude rules (comma separated). Overrides --include option.\n');
 }
 
-export function runVersionCommand(output: WritableStream) {
+export function runVersionCommand(output: WritableStream): void {
     output.write(logScanVersion);
     output.write('\n');
 }
 
-export function runListRulesCommand(output: WritableStream) {
-    // TODO respect --include and --exclude arguments
-    
+export function runListRulesCommand(output: WritableStream, args: Args): void {
+    // Get rules based on args
+    const rules = getRulesFromArgs(args)
+
     // Sort rules alphabetically
-    const sortedRules = Array.from(allRules)
-        .sort((a, b) => a.name.localeCompare(b.name));
+    const sortedRules = rules.sort((a, b) => a.name.localeCompare(b.name));
 
     // Print all rules
+    output.write(`Matched ${sortedRules.length} rules:`);
     for (const rule of sortedRules) {
         output.write(rule.name);
         output.write('\n');
@@ -83,15 +84,21 @@ export function runListRulesCommand(output: WritableStream) {
 export function parseScannerOpts(args: Args): ScannerOpts {
     const opts = Object.assign({}, defaultScannerOpts);
 
-    // Get flags
     opts.isTsv = args.getFlag('--tsv');
     opts.includeVerbose = args.getBool('--raw', 'y', false);
     opts.includeCleaned = args.getBool('--cleaned', 'y', true);
+    opts.rules = getRulesFromArgs(args);
 
-    // Filter rules
+    return opts;
+}
+
+export function getRulesFromArgs(args: Args): Rule[] {
+    // Read all include and exclude arguments
     const includes = args.getAllStrings('--include').flatMap(include => include.split(','));
     const excludes = args.getAllStrings('--exclude').flatMap(exclude => exclude.split(','));
-    opts.rules = allRules.filter(rule => {
+
+    // Filter rules
+    return allRules.filter(rule => {
         // If includes are specified, AND none of them match, then exclude this rule.
         if (includes.length > 0 && !includes.some(include => rule.name.includes(include))) {
             return false;
@@ -105,6 +112,4 @@ export function parseScannerOpts(args: Args): ScannerOpts {
 
         return true;
     });
-
-    return opts;
 }
