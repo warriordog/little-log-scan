@@ -2,6 +2,12 @@
   * 2.0.x
     * 2.0.0 - 2022-06-13
       * Rewrite in TypeScript
+      * New CLI system
+      * Use `process.stdout` instead of `Console`
+      * Exit cleanly if stdout is closed (this allows piping to `head` or `tail`)
+      * Fix regex in HTTP Basic decoder
+      * Fix regex in Vulnerability/CKEditor/v4.4.7/RCE
+      * Cleanup: remove unneeded escapes from regex
 * 1.x.x
   * 1.4.x
     * 1.4.0 - 2022.06-12

@@ -11,9 +11,9 @@
   "bin": "cli.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dist-debug": "",
-    "dist-release": "",
-    "run": ""
+    "build-package": "tsc -b",
+    "build-script": "echo \"Error: script build not implemented\" && exit 1",
+    "cli": "tsc -b && node dist/package/cli.js"
   },
   "keywords": [ "scan", "log" ],
   "engines": {
