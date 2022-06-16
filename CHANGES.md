@@ -1,5 +1,8 @@
 * 2.x.x
   * 2.0.x
+    * 2.2.0 - xxxx-xx-xx
+      * Update rule metadata
+      * Rename `Payload/Eval` to `Payload/generic/Eval`
     * 2.1.5 - 2022-06-15
       * Enable standalone builds
     * 2.1.4 - 2022-06-15

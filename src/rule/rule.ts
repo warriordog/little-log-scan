@@ -10,6 +10,9 @@ export interface Rule {
     /** Optional description of the security issue or suspicious input */
     readonly description?: string;
 
+    /** Optional array of related rules */
+    readonly relatedRules?: readonly string[];
+
     /** If this rule matches a registered CVE, then this is the CVE code (including CVE prefix) */
     readonly cve?: string;
 
