@@ -7,8 +7,8 @@ export interface Rule {
     /** Name of the rule */
     readonly name: string;
 
-    /** Optional description of the security issue or suspicious input */
-    readonly description?: string;
+    /** Description of the security issue or suspicious input */
+    readonly description: string;
 
     /** Optional array of related rules */
     readonly relatedRules?: readonly string[];
