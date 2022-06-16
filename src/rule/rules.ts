@@ -77,7 +77,7 @@ export const allRules: readonly Rule[] = [
         // Expanded list from https://stackoverflow.com/a/4669755
         // 2022-06-10: URLs can contain []
         name: 'Vulnerability/generic/traversal',
-        description: 'Insecure web servers will allow access to private files by insert ../ into the URL.',
+        description: 'Insecure web servers will allow access to private files by inserting ../ into the URL.',
         match: cleaned => cleaned.matchAll(/[A-Za-z\d\-._~!$&'()*+,;=:@\/?\[\]]*\/\.\.\/[A-Za-z\d\-._~!$&'()*+,;=:@\/?\[\]]*/g)
     },
     {
@@ -290,7 +290,7 @@ export const allRules: readonly Rule[] = [
     },
     {
         name: 'Vulnerability/Log4j/v2.17.0/CVE-2021-45046 RCE (Log4Shell 2)',
-        description: 'Log4j version 2.17.0 and older are vulnerable to RCE caused by an incomplete fix for CVE-2021-44338. By inserting a #, the new domain allowlist can be bypassed.',
+        description: 'Log4j version 2.17.0 and older are vulnerable to RCE caused by an incomplete fix for CVE-2021-44338. By inserting a #, the fix can be entirely bypassed.',
         links: [ 'https://www.lunasec.io/docs/blog/log4j-zero-day-severity-of-cve-2021-45046-increased/' ],
         cve: 'CVE-2021-45046',
         match: cleaned => cleaned.matchAll(/\$+\{(?:ctx:[^}]+|jndi:([^}]+#[^}]+))}/gi),
