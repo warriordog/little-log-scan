@@ -1,6 +1,7 @@
 * 2.x.x
   * 2.0.x
     * 2.2.0 - xxxx-xx-xx
+      * More permissive regex for `Payload/Downloader/wget`, `Payload/Downloader/curl`, and `Payload/Downloader/nc`.
       * Emit rule information
       * Fix `Malware/Mozi`
       * Update rule metadata

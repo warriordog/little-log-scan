@@ -54,17 +54,17 @@ export const allRules: readonly Rule[] = [
     {
         name: 'Payload/Downloader/netcat',
         description: 'Detects calls to netcat, which is commonly used to download payloads on embedded linux systems. This rule will attempt to capture all arguments including the target URL to assist further analysis.',
-        match: cleaned => cleaned.matchAll(/\bnc(?:\s*-\w\s?[\w:-]*)*\s+\w+(?:\.\w+)*\s+\d+-?\d*/gi)
+        match: cleaned => cleaned.matchAll(/\bnc(?:\s+[^&|;>\s]+)*(?:\s+[^&|;\s>]+){2}/gi)
     },
     {
         name: 'Payload/Downloader/wget',
         description: 'Detects calls to wget, which is commonly used to download payloads on Linux servers. This rule will attempt to capture all arguments including the target URL to assist further analysis.',
-        match: cleaned => cleaned.matchAll(/\bwget(?:\s+-\w\s?[\w:\/\\.\-_%]*|\s+--[\w_\-]+=[\w:\/\\.\-_%]+)*\s+[\w:\/\\.\-_%]+/gi)
+        match: cleaned => cleaned.matchAll(/\bwget(?:\s+[^&|;>\s]+)*\s+[^&|;\s>]+(?:\s+[^&|;\s>]+)*/gi)
     },
     {
         name: 'Payload/Downloader/curl',
         description: 'Detects calls to curl, which is commonly used to download payloads on Linux servers. This rule will attempt to capture all arguments including the target URL to assist further analysis.',
-        match: cleaned => cleaned.matchAll(/\bcurl(?:\s+-{1,2}[\w\-]+\s?[\w:\/\\.\-_%]*)*\s+[\w:\/\\.\-_%]+/gi)
+        match: cleaned => cleaned.matchAll(/\bcurl(?:\s+[^&|;>\s]+)*\s+[^&|;\s>]+(?:\s+[^&|;\s>]+)*/gi)
     },
 
     {
