@@ -1,6 +1,6 @@
 {
   "name": "little-log-scan",
-  "version": "2.1.5",
+  "version": "2.2.0-dev",
   "description": "Scan log files for suspicious strings",
   "homepage": "https://github.com/warriordog/little-log-scan",
   "bugs": "https://github.com/warriordog/little-log-scan/issues",
@@ -19,10 +19,10 @@
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc -b",
-    "build-standalone": "npm run build && util/dist-standalone.sh",
+    "build-package": "tsc -b",
+    "build-standalone": "npm run build-package && util/dist-standalone.sh",
     "cli": "tsc -b && node bin/cli",
-    "prepublish": "npm run build"
+    "prepublish": "npm run build-package"
   },
   "keywords": [ "scan", "log" ],
   "engines": {
