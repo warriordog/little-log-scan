@@ -38,6 +38,14 @@ export class Scanner {
                 throw e;
             }
         });
+
+        // Write TSV header if enabled.
+        // This is done here because:
+        // 1. It must happen before any matches are written
+        // 2. It must happen even if no matches are found
+        if (opts.includeTsvHeader) {
+            this.writeTsvHeader();
+        }
     }
     
     private onLine(rawLine: string): void {
@@ -132,6 +140,36 @@ export class Scanner {
             return [ rule.name + ':', String(lineNumber).padStart(9, ' ') ].concat(otherParts.filter(p => p !== '').map(p => `{${p}}`)).join(' ');
         }
     }
+
+    private writeTsvHeader(): void {
+        // Add hardcoded parts
+        const parts = [
+            'Rule Name',
+            'Line Index',
+            'Matched Text',
+        ];
+
+        // Add optional parts
+        if (this.options.includeCleaned) {
+            parts.push('Cleaned Line');
+        }
+        if (this.options.includeVerbose) {
+            parts.push('Raw Line');
+        }
+        if (this.options.includeDescription) {
+            parts.push('Rule Description');
+        }
+        if (this.options.includeCVE) {
+            parts.push('Related CVE');
+        }
+        if (this.options.includeLinks) {
+            parts.push('Info Links');
+        }
+
+        // Write it
+        this.output.write(parts.join('\t'));
+        this.output.write('\n');
+    }
     
     public close(): void {
         this.rl.close();
@@ -143,6 +181,7 @@ export interface ScannerOpts {
     cleaners: readonly Cleaner[];
     sanitizers: readonly Sanitizer[];
     isTsv: boolean;
+    includeTsvHeader: boolean;
     includeVerbose: boolean;
     includeCleaned: boolean;
     includeDescription: boolean;
@@ -155,6 +194,7 @@ export const defaultScannerOpts: ScannerOpts = {
     cleaners: allCleaners,
     sanitizers: allSanitizers,
     isTsv: false,
+    includeTsvHeader: false,
     includeCleaned: true,
     includeVerbose: false,
     includeDescription: false,

@@ -53,13 +53,14 @@ export function runHelpCommand(output: WritableStream): void {
     output.write('--version              Print version and exit.\n');
     output.write('--list-rules           List all rules that are included by the specified include/exclude patterns.\n');
     output.write('--tsv                  Output in TSV (tab-delimited) format.\n');
+    output.write('--tsv-header=<Y/N>     Emit a header row including all fields selected for output. Only applies in TSV mode.\n');
     output.write('--cleaned=<Y/N>        Include the entire cleaned, decoded line in the output. Defaults to Y (on).\n')
     output.write('--raw=<Y/N>            Include the entire raw, un-decoded line in the output. Defaults to N (off)\n');
-    output.write('--include=<patterns>   Patterns to include rules (comma separated). Only matching rules will be run.\n');
-    output.write('--exclude=<patterns>   Patterns to exclude rules (comma separated). Overrides --include option.\n');
     output.write('--rule-desc=<Y/N>      Include rule descriptions in the output.\n');
     output.write('--rule-cve=<Y/N>       Include a list of matching CVEs in the output.\n');
     output.write('--rule-links=<Y/N>     Include links to vulnerability details in the output.\n');
+    output.write('--include=<patterns>   Patterns to include rules (comma separated). Only matching rules will be run.\n');
+    output.write('--exclude=<patterns>   Patterns to exclude rules (comma separated). Overrides --include option.\n');
 }
 
 export function runVersionCommand(output: WritableStream): void {
@@ -88,6 +89,7 @@ export function parseScannerOpts(args: Args): ScannerOpts {
 
     // Override based on CLI flags
     opts.isTsv = args.getFlag('--tsv');
+    opts.includeTsvHeader = args.getBool('--tsv-header', 'y', false);
     opts.includeVerbose = args.getBool('--raw', 'y', false);
     opts.includeCleaned = args.getBool('--cleaned', 'y', true);
     opts.includeDescription = args.getBool('--rule-desc', 'y', false);

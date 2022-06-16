@@ -26,19 +26,20 @@ Lines are read from standard input, and any matches are written to standard outp
 
 The following options are supported. Any with an "argument" field should have a value set using the form `--option=value`.
 
-| Option       | Arguments  | Default            | Description                                                                   |
-|--------------|------------|:-------------------|:------------------------------------------------------------------------------|
-| --help       |            |                    | Print help and exit.                                                          |
-| --version    |            |                    | Print version and exit.                                                       |
-| --list-rules |            |                    | List all rules that are included by the specified include/exclude patterns.   |
-| --tsv        |            | unset (no)         | Output in TSV (tab-delimited) format.                                         |
-| --cleaned    | Y/N        | Y (yes)            | Include the entire cleaned, decoded line in the output.                       |
-| --raw        | Y/N        | N (no)             | Include the entire raw, un-decoded line in the output.                        |
-| --include    | pattern(s) | unset (everything) | Patterns to include rules (comma separated). Only matching rules will be run. |
-| --exclude    | pattern(s) | unset (none)       | Patterns to exclude rules (comma separated). Overrides --include option.      |
-| --rule-desc  | Y/N        | N (no)             | Include rule descriptions in the output.                                      |
-| --rule-cve   | Y/N        | N (no)             | Include a list of matching CVEs in the output.                                |
-| --rule-links | Y/N        | N (no)             | Include links to vulnerability details in the output.                         |
+| Option       | Arguments  | Default            | Description                                                                           |
+|--------------|------------|:-------------------|:--------------------------------------------------------------------------------------|
+| --help       |            |                    | Print help and exit.                                                                  |
+| --version    |            |                    | Print version and exit.                                                               |
+| --list-rules |            |                    | List all rules that are included by the specified include/exclude patterns.           |
+| --tsv        |            | unset (no)         | Output in TSV (tab-delimited) format.                                                 |
+| --tsv-header | Y/N        | N (no)             | Emit a header row including all fields selected for output. Only applies in TSV mode. |
+| --cleaned    | Y/N        | Y (yes)            | Include the entire cleaned, decoded line in the output.                               |
+| --raw        | Y/N        | N (no)             | Include the entire raw, un-decoded line in the output.                                |
+| --rule-desc  | Y/N        | N (no)             | Include rule descriptions in the output.                                              |
+| --rule-cve   | Y/N        | N (no)             | Include a list of matching CVEs in the output.                                        |
+| --rule-links | Y/N        | N (no)             | Include links to vulnerability details in the output.                                 |
+| --include    | pattern(s) | unset (everything) | Patterns to include rules (comma separated). Only matching rules will be run.         |
+| --exclude    | pattern(s) | unset (none)       | Patterns to exclude rules (comma separated). Overrides --include option.              |
 
 
 ## Output Formats
