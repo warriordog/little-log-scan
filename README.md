@@ -3,7 +3,8 @@ Small tool that scans log files for suspicious strings.
 Intended for webserver logs, but usable with any text-based log file.
 Lines are read from standard input, and any matches are written to standard output.
 
-[![npm version](https://badge.fury.io/js/little-log-scan.svg)](https://badge.fury.io/js/little-log-scan)
+![npm version](https://badge.fury.io/js/little-log-scan.svg)
+![GitHub Release Date](https://img.shields.io/github/release-date/warriordog/little-log-scan)
 
 ## Usage
 * Through npx: `npx little-log-scan [options]`
