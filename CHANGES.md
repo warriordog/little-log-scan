@@ -1,5 +1,7 @@
 * 2.x.x
   * 2.0.x
+    * 2.1.5 - 2022-06-15
+      * Enable standalone builds
     * 2.1.4 - 2022-06-15
       * Fix missing newline in output of `--list-rules`
       * Normalize `/generic` rules
