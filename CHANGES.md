@@ -1,6 +1,7 @@
 * 2.x.x
   * 2.0.x
     * 2.2.0 - xxxx-xx-xx
+      * Emit rule information
       * Fix `Malware/Mozi`
       * Update rule metadata
       * Rename `Payload/Eval` to `Payload/generic/Eval`

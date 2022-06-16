@@ -26,16 +26,20 @@ Lines are read from standard input, and any matches are written to standard outp
 
 The following options are supported. Any with an "argument" field should have a value set using the form `--option=value`.
 
-| Option       | Arguments  | Default    | Description                                                                   |
-|--------------|------------|:-----------|:------------------------------------------------------------------------------|
-| --help       |            |            | Print help and exit.                                                          |
-| --version    |            |            | Print version and exit.                                                       |
-| --list-rules |            |            | List all rules that are included by the specified include/exclude patterns.   |
-| --tsv        |            | No (unset) | Output in TSV (tab-delimited) format.                                         |
-| --cleaned    | Y/N        | Y (yes)    | Include the entire cleaned, decoded line in the output.                       |
-| --raw        | Y/N        | N (no)     | Include the entire raw, un-decoded line in the output.                        |
-| --include    | pattern(s) | Everything | Patterns to include rules (comma separated). Only matching rules will be run. |
-| --exclude    | pattern(s) | None       | Patterns to exclude rules (comma separated). Overrides --include option.      |
+| Option       | Arguments  | Default            | Description                                                                   |
+|--------------|------------|:-------------------|:------------------------------------------------------------------------------|
+| --help       |            |                    | Print help and exit.                                                          |
+| --version    |            |                    | Print version and exit.                                                       |
+| --list-rules |            |                    | List all rules that are included by the specified include/exclude patterns.   |
+| --tsv        |            | unset (no)         | Output in TSV (tab-delimited) format.                                         |
+| --cleaned    | Y/N        | Y (yes)            | Include the entire cleaned, decoded line in the output.                       |
+| --raw        | Y/N        | N (no)             | Include the entire raw, un-decoded line in the output.                        |
+| --include    | pattern(s) | unset (everything) | Patterns to include rules (comma separated). Only matching rules will be run. |
+| --exclude    | pattern(s) | unset (none)       | Patterns to exclude rules (comma separated). Overrides --include option.      |
+| --rule-desc  | Y/N        | N (no)             | Include rule descriptions in the output.                                      |
+| --rule-cve   | Y/N        | N (no)             | Include a list of matching CVEs in the output.                                |
+| --rule-links | Y/N        | N (no)             | Include links to vulnerability details in the output.                         |
+
 
 ## Output Formats
 Depending on flags, output may contain the following components:
@@ -44,29 +48,17 @@ Depending on flags, output may contain the following components:
 * __Match__: Portion of the line that was detected. This is automatically decoded / deobfuscated, if possible.
 * __Line__: Entire content of the matched line. This is automatically decoded / deobfuscated, if possible.
 * __Raw__: Same as "line", but NOT decoded. Only the standard sanitization is applied.
+* __Desc__: Description of the rule that matched.
+* __CVE__: Associated CVE number, if applicable.
+* __Links__: URLs to related information.
 
-Example output formats:
-* "TSV" means that `--tsv` is set.
-* "Raw" means that `--raw` is set to `y`.
-* "Clean" means that `--clean` is set to `y` or unset (default).
-
-| TSV | Raw | Clean | Format                                        | Notes                                |
-|-----|-----|-------|-----------------------------------------------|--------------------------------------|
-| X   | X   | X     | [Finding]\t[Index]\t[Match]\t[Line]\t[Raw]    |                                      |
-| X   |     | X     | [Finding]\t[Index]\t[Match]\t[Line]           |                                      |
-|     | X   | X     | [Finding]: [Index] {[Match]} {[Line]} {[Raw]} | Index is left-padded to 9 characters |
-|     |     | X     | [Finding]: [Index] {[Match]} {[Line]}         | Index is left-padded to 9 characters |
-| X   | X   |       | [Finding]\t[Index]\t[Match]\t[Raw]            |                                      |
-| X   |     |       | [Finding]\t[Index]\t[Match]                   |                                      |
-|     | X   |       | [Finding]: [Index] {[Match]} {[Raw]}          | Index is left-padded to 9 characters |
-|     |     |       | [Finding]: [Index] {[Match]}                  | Index is left-padded to 9 characters |
+Output will always start with the __Finding__, __Index__, and __Match__. The remaining options, if enabled, will appear in the order __Line__, __Raw__, __Desc__, __CVE__, and finally __Links__. Any disabled options will be skipped. In TSV mode, the output is not formatted beyond the required TSV format (tabs (`\t`) between cells, newlines (`\n`) between rows). Standard output mode will apply additional formatting for readability.
 
 ## Rules
 Rules form the main logic of little-log-scan. Rules consist of a regular expression to "match" the rule, along with optional logic to further decode or analyze the match. Some rules detect known inputs, while others are heuristic. Heuristic rules are typically labeled as "/generic" for easy filtering. Rules are split into several categories and subcategories:
 
 ### Vulnerabilities (`Vulnerability/`)
 These rules detect attempts to exploit known software vulnerabilities. Whenever possible, they are arranged hierarchically to allow filtering based on specific software / versions.
-TODO subcategories
 * Vulnerability/generic/traversal
 * Vulnerability/Axis Camera RCE
 * Vulnerability/CKEditor/v4.4.7/RCE
@@ -105,7 +97,7 @@ TODO subcategories
 * Vulnerability/ZyXEL/CVE-2020-9054 RCE
 
 ### Payloads (`Payload/`)
-These rules *attempt* to detect malicious payloads. They are mostly heuristic and generate a lot of noise.
+These rules attempt to detect malicious payloads. They are mostly heuristic and generate a lot of noise.
 * Payload/Downloader/curl
 * Payload/Downloader/generic
 * Payload/Downloader/netcat

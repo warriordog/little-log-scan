@@ -15,12 +15,7 @@ import {allSanitizers} from "../sanitizer/sanitizers.js";
  * Scans a stream for matches and 
  */
 export class Scanner {
-    private readonly rules: readonly Rule[];
-    private readonly cleaners: readonly Cleaner[];
-    private readonly sanitizers: readonly Sanitizer[];
-    private readonly isTsv: boolean;
-    private readonly includeVerbose: boolean;
-    private readonly includeCleaned: boolean;
+    private readonly options: ScannerOpts;
 
     private readonly output: WritableStream;
     private readonly rl: Interface;
@@ -29,13 +24,7 @@ export class Scanner {
     
     constructor(input: ReadableStream, output: WritableStream, opts: ScannerOpts = defaultScannerOpts) {
         this.output = output;
-
-        this.rules = opts.rules;
-        this.cleaners = opts.cleaners;
-        this.sanitizers = opts.sanitizers;
-        this.isTsv = opts.isTsv;
-        this.includeVerbose = opts.includeVerbose;
-        this.includeCleaned = opts.includeCleaned;
+        this.options = opts;
 
         // Setup Readline interface
         this.rl = readline.createInterface({ input });
@@ -64,7 +53,7 @@ export class Scanner {
 
     private cleanLine(rawLine: string): string {
         while (true) {
-            const newLine = this.cleaners.reduce((l, cleaner) => cleaner(l), rawLine);
+            const newLine = this.options.cleaners.reduce((l, cleaner) => cleaner(l), rawLine);
             if (newLine === rawLine) {
                 break;
             }
@@ -75,7 +64,7 @@ export class Scanner {
 
     private scanLine(cleanedLine: string, rawLine: string) {
         // Try each rule
-        for (const rule of this.rules) {
+        for (const rule of this.options.rules) {
             // Apply it and find all matches
             const matches = rule.match(cleanedLine, rawLine);
 
@@ -100,14 +89,8 @@ export class Scanner {
         }
     }
 
-    private sanitize(strings: TemplateStringsArray, ...values: unknown[]): string {
-        const parts = [ strings[0] ];
-        for (let i = 0; i < values.length; i++) {
-            const value = this.sanitizers.reduce((val, san) => san(val), String(values[i]));
-            parts.push(value);
-            parts.push(strings[i + 1]);
-        }
-        return parts.join('');
+    private sanitize(str: string): string {
+        return this.options.sanitizers.reduce((val, san) => san(val), str)
     }
 
     private writeMatch(rule: Rule, match: string, cleaned: string, raw: string, lineNumber: number): void {
@@ -117,34 +100,36 @@ export class Scanner {
     }
 
     private getMatchString(rule: Rule, match: string, cleanedLine: string, rawLine: string, lineNumber: number): string {
-        if (this.isTsv) {
-            if (this.includeCleaned) {
-                if (this.includeVerbose) {
-                    return this.sanitize`${rule.name}\t${lineNumber}\t${match}\t${cleanedLine}\t${rawLine}`;
-                } else {
-                    return this.sanitize`${rule.name}\t${lineNumber}\t${match}\t${cleanedLine}`;
-                }
-            } else {
-                if (this.includeVerbose) {
-                    return this.sanitize`${rule.name}\t${lineNumber}\t${match}\t${rawLine}`;
-                } else {
-                    return this.sanitize`${rule.name}\t${lineNumber}\t${match}`;
-                }
-            }
+        // Build array of tailing "detail" parts.
+        // These are similar enough that they can be handled by common logic.
+        const otherParts: string[] = [
+            this.sanitize(match)
+        ];
+        if (this.options.includeCleaned) {
+            otherParts.push(this.sanitize(cleanedLine));
+        }
+        if (this.options.includeVerbose) {
+            otherParts.push(this.sanitize(rawLine));
+        }
+        if (this.options.includeDescription) {
+            otherParts.push(rule.description);
+        }
+        if (this.options.includeCVE) {
+            otherParts.push(rule.cve ?? '');
+        }
+        if (this.options.includeLinks) {
+            otherParts.push(rule.links?.join(',') ?? '');
+        }
+
+        if (this.options.isTsv) {
+            // Prepend name/line, and then join all into a TSV line
+            return [ rule.name, String(lineNumber) ].concat(otherParts).join('\t');
         } else {
-            if (this.includeCleaned) {
-                if (this.includeVerbose) {
-                    return this.sanitize`${rule.name}: ${String(lineNumber).padStart(9, ' ')} {${match}} {${cleanedLine}} {${rawLine}}`;
-                } else {
-                    return this.sanitize`${rule.name}: ${String(lineNumber).padStart(9, ' ')} {${match}} {${cleanedLine}}`;
-                }
-            } else {
-                if (this.includeVerbose) {
-                    return this.sanitize`${rule.name}: ${String(lineNumber).padStart(9, ' ')} {${match}} {${rawLine}}`;
-                } else {
-                    return this.sanitize`${rule.name}: ${String(lineNumber).padStart(9, ' ')} {${match}}`;
-                }
-            }
+            // 1. Prepend formatted name/line
+            // 2. Filter empty parts
+            // 3. Wrap other parts in {}
+            // 4. Join all together into the formatted output line
+            return [ rule.name + ':', String(lineNumber).padStart(9, ' ') ].concat(otherParts.filter(p => p !== '').map(p => `{${p}}`)).join(' ');
         }
     }
     
@@ -160,6 +145,9 @@ export interface ScannerOpts {
     isTsv: boolean;
     includeVerbose: boolean;
     includeCleaned: boolean;
+    includeDescription: boolean;
+    includeCVE: boolean;
+    includeLinks: boolean;
 }
 
 export const defaultScannerOpts: ScannerOpts = {
@@ -168,7 +156,10 @@ export const defaultScannerOpts: ScannerOpts = {
     sanitizers: allSanitizers,
     isTsv: false,
     includeCleaned: true,
-    includeVerbose: false
+    includeVerbose: false,
+    includeDescription: false,
+    includeCVE: false,
+    includeLinks: false
 }
 
 /**
