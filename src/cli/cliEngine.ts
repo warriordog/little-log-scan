@@ -1,11 +1,13 @@
 /*  This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import {defaultScannerOpts, Scanner, ScannerOpts} from "../scanner/scanner.js";
+import {Scanner} from "../scanner/scanner.js";
 import ReadableStream = NodeJS.ReadableStream;
 import WritableStream = NodeJS.WritableStream;
 import {Args} from "./args.js";
 import {allRules} from "../rule/rules.js";
 import {logScanVersion, Rule} from "../index.js";
+import {defaultMatcherOpts, Matcher} from "../scanner/matcher.js";
+import {defaultWriterOpts, Writer} from "../scanner/writer.js";
 
 export function runCli(cliArgs: string[], input: ReadableStream = process.stdin, output: WritableStream = process.stdout): void {
     const args = new Args(cliArgs);
@@ -19,10 +21,7 @@ export function runCli(cliArgs: string[], input: ReadableStream = process.stdin,
         runListRulesCommand(output, args);
     } else {
         // Run normal scan process
-        const scannerOpts = parseScannerOpts(args);
-
-        // Create and run scanner
-        new Scanner(input, output, scannerOpts);
+        runNormalMode(input, output, args);
     }
 }
 
@@ -83,21 +82,37 @@ export function runListRulesCommand(output: WritableStream, args: Args): void {
     }
 }
 
-export function parseScannerOpts(args: Args): ScannerOpts {
-    // Preload default options
-    const opts = Object.assign({}, defaultScannerOpts);
+export function runNormalMode(input: ReadableStream, output: WritableStream, args: Args): void {
+    const matcher = createMatcher(args);
+    const writer = createWriter(output, args);
 
-    // Override based on CLI flags
-    opts.isTsv = args.getFlag('--tsv');
-    opts.includeTsvHeader = args.getBool('--tsv-header', 'y', false);
-    opts.includeVerbose = args.getBool('--raw', 'y', false);
-    opts.includeCleaned = args.getBool('--cleaned', 'y', true);
-    opts.includeDescription = args.getBool('--rule-desc', 'y', false);
-    opts.includeCVE = args.getBool('--rule-cve', 'y', false);
-    opts.includeLinks = args.getBool('--rule-links', 'y', false);
-    opts.rules = getRulesFromArgs(args);
+    // Create and run scanner
+    const scanner = new Scanner(input, matcher, writer);
+    scanner.on('error', error => {
+        output.write(`Unhandled Error: ${ error }\n`);
+    });
+}
 
-    return opts;
+export function createMatcher(args: Args): Matcher {
+    const opts = Object.assign({}, defaultMatcherOpts, {
+        rules: getRulesFromArgs(args)
+    });
+
+    return new Matcher(opts);
+}
+
+export function createWriter(output: WritableStream, args: Args): Writer {
+    const opts = Object.assign({}, defaultWriterOpts, {
+        isTsv: args.getFlag('--tsv'),
+        includeTsvHeader: args.getBool('--tsv-header', 'y', false),
+        includeVerbose: args.getBool('--raw', 'y', false),
+        includeCleaned: args.getBool('--cleaned', 'y', true),
+        includeDescription: args.getBool('--rule-desc', 'y', false),
+        includeCVE: args.getBool('--rule-cve', 'y', false),
+        includeLinks: args.getBool('--rule-links', 'y', false)
+    });
+
+    return new Writer(output, opts);
 }
 
 export function getRulesFromArgs(args: Args): Rule[] {

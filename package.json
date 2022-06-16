@@ -24,9 +24,15 @@
     "cli": "tsc -b && node bin/cli",
     "prepublish": "npm run build-package"
   },
-  "keywords": [ "scan", "log" ],
+  "keywords": [
+    "scan",
+    "log"
+  ],
   "engines": {
     "node": ">=16"
+  },
+  "dependencies": {
+    "tiny-typed-emitter": "2.1.0"
   },
   "devDependencies": {
     "@types/node": "16.11.39",

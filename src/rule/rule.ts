@@ -17,10 +17,10 @@ export interface Rule {
     readonly links?: readonly string[];
 
     /** Function to check the input for matches */
-    readonly match: Matcher;
+    readonly match: MatchFunction;
 
     /** Optional function to decode a match */
-    readonly decode?: Decoder;
+    readonly decode?: DecodeFunction;
 }
 
 /**
@@ -30,7 +30,7 @@ export interface Rule {
  * @param raw Unmodified input string
  * @returns Returns iteration of regex matches. Each match should represent a separate and distinct occurrence of the rule.
  */
-export type Matcher = (cleaned: string, raw: string) => (IterableIterator<RegExpMatchArray>);
+export type MatchFunction = (cleaned: string, raw: string) => (IterableIterator<RegExpMatchArray>);
 
 /**
  * Decode a found match.
@@ -40,4 +40,4 @@ export type Matcher = (cleaned: string, raw: string) => (IterableIterator<RegExp
  * @param rawLine Unmodified input string
  * @returns Returns the matched string with rule-specific decoding applied
  */
-export type Decoder = (match: RegExpMatchArray, cleanedLine: string, rawLine: string) => string;
+export type DecodeFunction = (match: RegExpMatchArray, cleanedLine: string, rawLine: string) => string;

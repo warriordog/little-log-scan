@@ -7,6 +7,7 @@
       * Fix `Malware/Mozi`
       * Update rule metadata
       * Rename `Payload/Eval` to `Payload/generic/Eval`
+      * Refactor `Scanner` system to be more modular
     * 2.1.5 - 2022-06-15
       * Enable standalone builds
     * 2.1.4 - 2022-06-15
