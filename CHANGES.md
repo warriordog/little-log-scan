@@ -4,6 +4,7 @@
       * `--rule-desc`, `--rule-cve`, and `--tsv-header` are on by default
       * Raw output is moved to the end of the line
       * Add `Payload/Stealth/Log Tampering`
+      * Match more filenames in `Malware/Mozi`
       * Fix overzealous matching in `Payload/Downloader/generic`
       * Simplify `Vulnerability/generic/traversal` regex by only matching the part with . and /
     * 2.2.0 - 2022-06-17

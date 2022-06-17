@@ -343,7 +343,7 @@ export const allRules: readonly Rule[] = [
         name: 'Malware/Mozi',
         description: 'The Mozi botnet targets embedded IoT (Internet of Things) devices using known but frequently unpatched vulnerabilities. This rule attempts to detect it by recognizing its most common filenames.',
         links: [ 'https://blog.lumen.com/new-mozi-malware-family-quietly-amasses-iot-bots/' ],
-        match: cleaned => cleaned.matchAll(/\bMozi\.m\b/gi)
+        match: cleaned => cleaned.matchAll(/\bMozi\.\w+\b/gi)
     },
     {
         name: 'Malware/Webshell/generic',
