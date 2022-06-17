@@ -1,5 +1,8 @@
 * 2.x.x
   * 2.0.x
+    * 2.2.1 - xxxx-xx-xx
+      * Fix overzealous matching in `Payload/Downloader/generic`
+      * Add `Payload/Stealth/Log Tampering`
     * 2.2.0 - 2022-06-17
       * Emit TSV header
       * Emit rule information

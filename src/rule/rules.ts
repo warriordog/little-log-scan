@@ -49,7 +49,7 @@ export const allRules: readonly Rule[] = [
     {
         name: 'Payload/Downloader/generic',
         description: 'Detects functions and utilities that are commonly used to download additional payloads.',
-        match: cleaned => cleaned.matchAll(/\b(?:wget|curl|nc|Net\.WebClient|Invoke-WebRequest|bitsadmin)\b/gi)
+        match: cleaned => cleaned.matchAll(/\b(?:(?:wget|curl|nc|bitsadmin)[\s$]|(?:Net\.WebClient|Invoke-WebRequest)\b)/gi)
     },
     {
         name: 'Payload/Downloader/netcat',
@@ -65,6 +65,11 @@ export const allRules: readonly Rule[] = [
         name: 'Payload/Downloader/curl',
         description: 'Detects calls to curl, which is commonly used to download payloads on Linux servers. This rule will attempt to capture all arguments including the target URL to assist further analysis.',
         match: cleaned => cleaned.matchAll(/\bcurl(?:\s+[^&|;>\s]+)*\s+[^&|;\s>]+(?:\s+[^&|;\s>]+)*/gi)
+    },
+    {
+        name: 'Payload/Stealth/Log Tampering',
+        description: 'Detects attempts to hide activity by tampering with log files.',
+        match: cleaned => cleaned.matchAll(/\b(?:clear|cls|history)\b/gi)
     },
 
     {

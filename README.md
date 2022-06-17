@@ -111,6 +111,7 @@ These rules attempt to detect malicious payloads. They are mostly heuristic and 
 * Payload/Script/Shebang
 * Payload/Shell/Linux
 * Payload/Shell/Windows
+* Payload/Stealth/Log Tampering
 
 ### Malware (`Malware/`)
 These rules detect communication patterns of known and suspected malware. Successful responses can indicate that the target machine is already compromised.
