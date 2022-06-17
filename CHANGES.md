@@ -2,8 +2,9 @@
   * 2.0.x
     * 2.3.0 - xxxx-xx-xx
       * `--rule-desc` and `--rule-cve` are on by default
-      * Fix overzealous matching in `Payload/Downloader/generic`
       * Add `Payload/Stealth/Log Tampering`
+      * Fix overzealous matching in `Payload/Downloader/generic`
+      * Simplify `Vulnerability/generic/traversal` regex by only matching the part with . and /
     * 2.2.0 - 2022-06-17
       * Emit TSV header
       * Emit rule information

@@ -79,11 +79,9 @@ export const allRules: readonly Rule[] = [
     },
 
     {
-        // Expanded list from https://stackoverflow.com/a/4669755
-        // 2022-06-10: URLs can contain []
         name: 'Vulnerability/generic/traversal',
         description: 'Insecure web servers will allow access to private files by inserting ../ into the URL.',
-        match: cleaned => cleaned.matchAll(/[A-Za-z\d\-._~!$&'()*+,;=:@\/?\[\]]*\/\.\.\/[A-Za-z\d\-._~!$&'()*+,;=:@\/?\[\]]*/g)
+        match: cleaned => cleaned.matchAll(/\.*\/+(?:\.{2,}\/+)+\.*/g)
     },
     {
         name: 'Vulnerability/CKEditor/v4.4.7/RCE',
