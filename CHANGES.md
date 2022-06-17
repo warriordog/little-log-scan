@@ -2,6 +2,7 @@
   * 2.0.x
     * 2.3.0 - xxxx-xx-xx
       * `--rule-desc`, `--rule-cve`, and `--tsv-header` are on by default
+      * Raw output is moved to the end of the line
       * Add `Payload/Stealth/Log Tampering`
       * Fix overzealous matching in `Payload/Downloader/generic`
       * Simplify `Vulnerability/generic/traversal` regex by only matching the part with . and /

@@ -69,9 +69,6 @@ export class Writer extends TypedEmitter<WriterEvents> {
         if (this.options.includeCleaned) {
             otherParts.push(sanitizedCleanedLine);
         }
-        if (this.options.includeVerbose) {
-            otherParts.push(sanitizedRawLine);
-        }
         if (this.options.includeDescription) {
             otherParts.push(match.rule.description);
         }
@@ -80,6 +77,9 @@ export class Writer extends TypedEmitter<WriterEvents> {
         }
         if (this.options.includeLinks) {
             otherParts.push(match.rule.links?.join(',') ?? '');
+        }
+        if (this.options.includeVerbose) {
+            otherParts.push(sanitizedRawLine);
         }
 
         if (this.options.isTsv) {

@@ -53,7 +53,7 @@ Depending on flags, output may contain the following components:
 * __CVE__: Associated CVE number, if applicable.
 * __Links__: URLs to related information.
 
-Output will always start with the __Finding__, __Index__, and __Match__. The remaining options, if enabled, will appear in the order __Line__, __Raw__, __Desc__, __CVE__, and finally __Links__. Any disabled options will be skipped. In TSV mode, the output is not formatted beyond the required TSV format (tabs (`\t`) between cells, newlines (`\n`) between rows). Standard output mode will apply additional formatting for readability.
+Output will always start with the __Finding__, __Index__, and __Match__. The remaining options, if enabled, will appear in the order __Line__, __Desc__, __CVE__, __Links__, and finally __Raw__. Any disabled options will be skipped. In TSV mode, the output is not formatted beyond the required TSV format (tabs (`\t`) between cells, newlines (`\n`) between rows). Standard output mode will apply additional formatting for readability.
 
 ## Rules
 Rules form the main logic of little-log-scan. Rules consist of a regular expression to "match" the rule, along with optional logic to further decode or analyze the match. Some rules detect known inputs, while others are heuristic. Heuristic rules are typically labeled as "/generic" for easy filtering. Rules are split into several categories and subcategories:

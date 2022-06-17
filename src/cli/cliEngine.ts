@@ -42,7 +42,7 @@ export function runHelpCommand(output: WritableStream): void {
     output.write('* Links:  URLs to related information.\n');
     output.write('\n');
     output.write('Output will always start with the Finding, Index, and Match.\n');
-    output.write('The remaining options, if enabled, will appear in the order Line, Raw, Desc, CVE, and finally Links.\n');
+    output.write('The remaining options, if enabled, will appear in the order Line, Desc, CVE, Links, and finally Raw.\n');
     output.write('Any disabled options will be skipped.\n');
     output.write('In TSV mode, the output is not formatted beyond the required TSV format (tabs (`\t`) between cells, newlines (`\n`) between rows).\n');
     output.write('Standard output mode will apply additional formatting for readability.\n');
