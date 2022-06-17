@@ -52,7 +52,7 @@ export function runHelpCommand(output: WritableStream): void {
     output.write('--version              Print version and exit.\n');
     output.write('--list-rules           List all rules that are included by the specified include/exclude patterns.\n');
     output.write('--tsv                  Output in TSV (tab-delimited) format.\n');
-    output.write('--tsv-header=<Y/N>     Emit a header row including all fields selected for output. Only applies in TSV mode.\n');
+    output.write('--tsv-header=<Y/N>     In TSV mode, emit a header row naming all columns in the output. Defaults to Y (on).\n');
     output.write('--cleaned=<Y/N>        Include the entire cleaned, decoded line in the output. Defaults to Y (on).\n')
     output.write('--raw=<Y/N>            Include the entire raw, un-decoded line in the output. Defaults to N (off)\n');
     output.write('--rule-desc=<Y/N>      Include rule descriptions in the output. Defaults to Y (on).\n');
@@ -104,7 +104,7 @@ export function createMatcher(args: Args): Matcher {
 export function createWriter(output: WritableStream, args: Args): Writer {
     const opts = Object.assign({}, defaultWriterOpts, {
         isTsv: args.getFlag('--tsv'),
-        includeTsvHeader: args.getBool('--tsv-header', 'y', false),
+        includeTsvHeader: args.getBool('--tsv-header', 'y', true),
         includeVerbose: args.getBool('--raw', 'y', false),
         includeCleaned: args.getBool('--cleaned', 'y', true),
         includeDescription: args.getBool('--rule-desc', 'y', true),
