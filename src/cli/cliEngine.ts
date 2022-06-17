@@ -5,7 +5,7 @@ import ReadableStream = NodeJS.ReadableStream;
 import WritableStream = NodeJS.WritableStream;
 import {Args} from "./args.js";
 import {allRules} from "../rule/rules.js";
-import {logScanVersion, Rule} from "../index.js";
+import {versionString, Rule} from "../index.js";
 import {defaultMatcherOpts, Matcher} from "../scanner/matcher.js";
 import {defaultWriterOpts, Writer} from "../scanner/writer.js";
 
@@ -63,7 +63,7 @@ export function runHelpCommand(output: WritableStream): void {
 }
 
 export function runVersionCommand(output: WritableStream): void {
-    output.write(logScanVersion);
+    output.write(versionString);
     output.write('\n');
 }
 

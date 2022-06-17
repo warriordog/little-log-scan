@@ -15,12 +15,12 @@
     "LICENSE",
     "CHANGES.md",
     "dist/package/",
-    "bin/"
+    "bin/cli"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build-package": "tsc -b",
-    "build-standalone": "npm run build-package && util/dist-standalone.sh",
+    "build-standalone": "npm run build-package && node bin/build-standalone",
     "cli": "tsc -b && node bin/cli",
     "prepublish": "npm run build-package"
   },

@@ -1,0 +1,45 @@
+#!/usr/bin/env node
+
+const { rm } = require('fs/promises');
+const path = require('path');
+const { spawn } = require('child_process');
+const { buildVersion, buildDate } = require('../dist/package/version.js');
+
+// Ugly hack because package.json is not type: module, so top-level await is not supported.
+(async function() {
+    // Path to save the archive
+    const rawArchivePath = `./dist/standalone/little-log-scan_${ buildVersion }_${ buildDate }.zip`;
+
+    // Paths to include in the archive
+    const rawFilePaths = [
+        'dist/package',
+        'bin/cli',
+        'LICENSE',
+        'CHANGES.md',
+        'README.md',
+        'little-log-scan.sh',
+        'little-log-scan.bat',
+        'node_modules/tiny-typed-emitter'
+    ];
+
+    // Normalize directory separators in paths
+    const archivePath = rawArchivePath.replaceAll('/', path.sep);
+    const filePaths = rawFilePaths.map(fp => fp.replaceAll('/', path.sep));
+
+    // Delete the existing archive
+    await rm(archivePath, {
+        force: true // Ignore errors if it doesn't exist
+    });
+
+    // Build arguments to 7zip
+    const zArgs = ['a', '-tZIP', archivePath].concat(filePaths);
+
+    // Call 7z to build the archive
+    const proc = spawn('7z', zArgs, {
+        stdio: 'inherit', // Pass through stdio streams,
+        windowsHide: true // Hide console window
+    });
+
+    // Wait for 7z to finish
+    await new Promise(r => proc.on('close', r));
+})();
