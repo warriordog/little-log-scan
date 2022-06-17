@@ -1,11 +1,11 @@
 * 2.x.x
   * 2.0.x
-    * 2.2.0 - xxxx-xx-xx
-      * More permissive regex for `Payload/Downloader/wget`, `Payload/Downloader/curl`, and `Payload/Downloader/nc`.
+    * 2.2.0 - 2022-06-17
       * Emit TSV header
       * Emit rule information
-      * Fix `Malware/Mozi`
       * Update rule metadata
+      * More permissive regex for `Payload/Downloader/wget`, `Payload/Downloader/curl`, and `Payload/Downloader/nc`
+      * Fix `Malware/Mozi`
       * Rename `Payload/Eval` to `Payload/generic/Eval`
       * Refactor `Scanner` system to be more modular
       * Refactor version info into separate `version.ts` file
