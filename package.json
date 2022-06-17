@@ -1,6 +1,6 @@
 {
   "name": "little-log-scan",
-  "version": "2.2.0",
+  "version": "2.3.0-dev",
   "description": "Scan log files for suspicious strings",
   "homepage": "https://github.com/warriordog/little-log-scan",
   "bugs": "https://github.com/warriordog/little-log-scan/issues",

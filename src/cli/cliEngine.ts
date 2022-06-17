@@ -55,9 +55,9 @@ export function runHelpCommand(output: WritableStream): void {
     output.write('--tsv-header=<Y/N>     Emit a header row including all fields selected for output. Only applies in TSV mode.\n');
     output.write('--cleaned=<Y/N>        Include the entire cleaned, decoded line in the output. Defaults to Y (on).\n')
     output.write('--raw=<Y/N>            Include the entire raw, un-decoded line in the output. Defaults to N (off)\n');
-    output.write('--rule-desc=<Y/N>      Include rule descriptions in the output.\n');
-    output.write('--rule-cve=<Y/N>       Include a list of matching CVEs in the output.\n');
-    output.write('--rule-links=<Y/N>     Include links to vulnerability details in the output.\n');
+    output.write('--rule-desc=<Y/N>      Include rule descriptions in the output. Defaults to Y (on).\n');
+    output.write('--rule-cve=<Y/N>       Include a list of matching CVEs in the output. Defaults to Y (on).\n');
+    output.write('--rule-links=<Y/N>     Include links to vulnerability details in the output. Defaults to N (off).\n');
     output.write('--include=<patterns>   Patterns to include rules (comma separated). Only matching rules will be run.\n');
     output.write('--exclude=<patterns>   Patterns to exclude rules (comma separated). Overrides --include option.\n');
 }
@@ -107,8 +107,8 @@ export function createWriter(output: WritableStream, args: Args): Writer {
         includeTsvHeader: args.getBool('--tsv-header', 'y', false),
         includeVerbose: args.getBool('--raw', 'y', false),
         includeCleaned: args.getBool('--cleaned', 'y', true),
-        includeDescription: args.getBool('--rule-desc', 'y', false),
-        includeCVE: args.getBool('--rule-cve', 'y', false),
+        includeDescription: args.getBool('--rule-desc', 'y', true),
+        includeCVE: args.getBool('--rule-cve', 'y', true),
         includeLinks: args.getBool('--rule-links', 'y', false)
     });
 

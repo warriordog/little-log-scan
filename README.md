@@ -35,8 +35,8 @@ The following options are supported. Any with an "argument" field should have a 
 | --tsv-header | Y/N        | N (no)             | Emit a header row including all fields selected for output. Only applies in TSV mode. |
 | --cleaned    | Y/N        | Y (yes)            | Include the entire cleaned, decoded line in the output.                               |
 | --raw        | Y/N        | N (no)             | Include the entire raw, un-decoded line in the output.                                |
-| --rule-desc  | Y/N        | N (no)             | Include rule descriptions in the output.                                              |
-| --rule-cve   | Y/N        | N (no)             | Include a list of matching CVEs in the output.                                        |
+| --rule-desc  | Y/N        | Y (yes)            | Include rule descriptions in the output.                                              |
+| --rule-cve   | Y/N        | Y (yes)            | Include a list of matching CVEs in the output.                                        |
 | --rule-links | Y/N        | N (no)             | Include links to vulnerability details in the output.                                 |
 | --include    | pattern(s) | unset (everything) | Patterns to include rules (comma separated). Only matching rules will be run.         |
 | --exclude    | pattern(s) | unset (none)       | Patterns to exclude rules (comma separated). Overrides --include option.              |

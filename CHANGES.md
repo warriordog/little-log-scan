@@ -1,6 +1,7 @@
 * 2.x.x
   * 2.0.x
-    * 2.2.1 - xxxx-xx-xx
+    * 2.3.0 - xxxx-xx-xx
+      * `--rule-desc` and `--rule-cve` are on by default
       * Fix overzealous matching in `Payload/Downloader/generic`
       * Add `Payload/Stealth/Log Tampering`
     * 2.2.0 - 2022-06-17
