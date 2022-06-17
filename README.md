@@ -3,8 +3,8 @@ Small tool that scans log files for suspicious strings.
 Intended for webserver logs, but usable with any text-based log file.
 Lines are read from standard input, and any matches are written to standard output.
 
-[![npm](https://img.shields.io/npm/v/little-log-scan)](https://www.npmjs.com/package/little-log-scan)
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/warriordog/little-log-scan?label=standalone)](https://github.com/warriordog/little-log-scan/releases/latest)
+[![latest npm version](https://img.shields.io/npm/v/little-log-scan)](https://www.npmjs.com/package/little-log-scan)
+[![latest standalone version](https://img.shields.io/github/v/release/warriordog/little-log-scan?label=standalone)](https://github.com/warriordog/little-log-scan/releases/latest)
 
 ## Usage
 * Through npx: `npx little-log-scan [options]`
