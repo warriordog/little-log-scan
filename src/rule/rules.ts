@@ -338,6 +338,34 @@ export const allRules: readonly Rule[] = [
         cve: 'CVE-2014-7169',
         match: cleaned => cleaned.matchAll(/(\s*)\s*\{\s*(\w+)\s*=\s*>\s*\\/g)
     },
+    {
+        name: 'Vulnerability/Concrete/v8.5.7/CVE-2022-30117 Arbitrary File Delete',
+        description: 'Concrete CMS versions 9.0 through 9.0.2, version 8.5.7, and older are vulnerable to Arbitrary File Deletion through directory traversal in /ccm/system/file/upload.',
+        links: [ 'https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-30117' ],
+        cve: 'CVE-2022-30117',
+        match: cleaned => cleaned.matchAll(/\bindex\.php\/ccm\/system\/file\/upload\b/gi)
+    },
+    {
+        name: 'Vulnerability/Concrete/v8.5.7/CVE-2022-30118 XSS',
+        description: 'Concrete CMS versions 9.0 through 9.0.2, version 8.5.7, and older are vulnerable to XSS in /dashboard/system/express/entities/forms/save_control/. XSS is only affective against older browsers.',
+        links: [ 'https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-30118' ],
+        cve: 'CVE-2022-30118',
+        match: cleaned => cleaned.matchAll(/\bdashboard\/system\/express\/entities\/forms\/save_control\b/gi)
+    },
+    {
+        name: 'Vulnerability/Concrete/v8.5.7/CVE-2022-30119 XSS',
+        description: 'Concrete CMS versions 9.0 through 9.0.2, version 8.5.7, and older are vulnerable to XSS in /dashboard/reports/logs/view. XSS is only affective against older browsers.',
+        links: [ 'https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-30119' ],
+        cve: 'CVE-2022-30119',
+        match: cleaned => cleaned.matchAll(/\bdashboard\/reports\/logs\/view\b/gi)
+    },
+    {
+        name: 'Vulnerability/Concrete/v8.5.7/CVE-2022-30120 XSS',
+        description: 'Concrete CMS versions 9.0 through 9.0.2, version 8.5.7, and older are vulnerable to XSS in /dashboard/blocks/stacks/view_details. XSS is only affective against older browsers.',
+        links: [ 'https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-30120' ],
+        cve: 'CVE-2022-30120',
+        match: cleaned => cleaned.matchAll(/\bdashboard\/blocks\/stacks\/view_details\b/gi)
+    },
 
     {
         name: 'Malware/Mozi',
