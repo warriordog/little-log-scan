@@ -19,37 +19,162 @@ export const allRules: readonly Rule[] = [
     {
         name: 'Payload/Shell/Linux',
         description: 'Detects *nix scripts by matching common shell commands.',
-        match: cleaned => cleaned.matchAll(/\b(?:chmod|bash|sudo|echo|cat)(?=[\s<>|&])/gi)
+        match: cleaned => cleaned.matchAll(/\b(?:chmod|bash|sudo|echo|cat)\b/gi)
     },
     {
         name: 'Payload/Shell/Windows',
         description: 'Detects Windows scripts by matching common script runtimes and batch commands.',
-        match: cleaned => cleaned.matchAll(/\b(?:powershell|cmd|echo|jscript|cscript)(?=[\s<>|&])/gi)
+        match: cleaned => cleaned.matchAll(/\b(?:powershell|cmd|echo|jscript|cscript|csi|dnx|rcsi)\b/gi)
     },
     {
-        name: 'Payload/generic/Eval',
-        description: 'Detects "eval" style functions. These are often used in shellcode to pivot to a stronger payload.',
-        match: cleaned => cleaned.matchAll(/\b(?:exec|eval)(?=[\s(])/gi)
+        name: 'Payload/Execute/Functions/generic',
+        description: 'Detects script functions that are used to execute other code. These are often used in shellcode to pivot to a stronger payload.',
+        match: cleaned => cleaned.matchAll(/\b(?:exec|eval)\b/gi)
     },
     {
-        name: 'Payload/Executable/generic',
+        name: 'Payload/Execute/Tools/generic/Windows',
+        description: 'Detects tools, applications, and functions that are used to execute other code. These are often used in shellcode to pivot to a stronger payload.',
+        match: cleaned => cleaned.matchAll(/\b(?:at|Atbroker|cmstp|Diskshadow|Dnscmd|Explorer|Extexport|Forfiles|Ie4uinit|Infdefaultinstall|Installutil|Mavinject|Mmc|Microsoft\.Workflow\.Compiler|Msbuild|Msdt|Mshta|Msiexec|Netsh|Odbcconf|Pcalua|Pcwrun|Pnputil|Presentationhost|Rasautou|Regasm|Register-cimprovider|Regsvcs|Regsvr32|Rundll32|Runonce|Runscripthelper|Schtasks|Scriptrunner|SettingSyncHost|Stordiag|SyncAppvPublishingServer|Ttdinject|Tttracer|Verclsid|Wab|Wlrmdr|Wmic|WorkFolders|wuauclt|Desk\.cpl|(?:Advpack|Ieadvpack|Ieframe|Mshtml|Pcwutl|Setupapi|Shdocvw|Shell32|Syssetup)\.dll|AccCheckConsole|AgentExecutor|Appvlp|Bginfo|Cdb|coregen|DefaultPack|Devtoolslauncher|Dotnet|Dxcap|Mftrace|Msdeploy|msxsl|Procdump|Procdump64|Remote|Sqlps|SQLToolsPS|te|Tracker|VSIISExeLauncher|vsjitdebugger|hh|Ieexec|Xwizard)\b/gi)
+    },
+    {
+        name: 'Payload/Execute/Tools/bitsadmin',
+        description: 'Detects usage of the bitsadmin tool to execute other code. This can be used to pivot to stronger payload.',
+        *match(cleaned) {
+            // Match the entire command line, and then check if it includes the /SetNotifyCmdLine switch (used for execution)
+            for (const match of cleaned.matchAll(/\bbitsadmin\b[\s\w\/\\.:\-]+/gi)) {
+                if (match[0].toLowerCase().includes('/setnotifycmdline')) {
+                    yield match;
+                }
+            }
+        }
+    },
+    {
+        name: 'Payload/Execute/Tools/certoc',
+        description: 'Detects usage of the CertOC tool to execute other code. This can be used to pivot to stronger payload.',
+        *match(cleaned) {
+            // Match the entire command line, and then check if it includes the -LoadDLL switch (used for execution)
+            for (const match of cleaned.matchAll(/\bcertoc\b[\s\w\/\\.:\-]+/gi)) {
+                if (match[0].toLowerCase().includes('-loaddll')) {
+                    yield match;
+                }
+            }
+        }
+    },
+    {
+        name: 'Payload/Execute/Tools/squirrel',
+        description: 'Detects usage of the squirrel tool (MS Teams updater) to execute other code. This can be used to pivot to stronger payload.',
+        *match(cleaned) {
+            // Match the entire command line, and then check if it includes the --update, --updateRollback, or --processStart switches (used for execution)
+            for (const match of cleaned.matchAll(/\b(?:squirrel|update)\b[\s\w\/\\.:\-]+/gi)) {
+                const cmd = match[0].toLowerCase();
+                if (cmd.includes('--update') || cmd.includes('--updaterollback') || cmd.includes('--processstart')) {
+                    yield match;
+                }
+            }
+        }
+    },
+    {
+        name: 'Payload/Execute/Tools/url.dll',
+        description: 'Detects usage of url.dll to execute other code. This can be used to pivot to stronger payload.',
+        *match(cleaned) {
+            // Match the entire command line, and then check if it includes OpenURL or FileProtocolHandler arguments (used for execution)
+            for (const match of cleaned.matchAll(/\burl\.dll\b[\s\w\/\\.:\-,]+/gi)) {
+                const cmd = match[0].toLowerCase();
+                if (cmd.includes('openurl') || cmd.includes('fileprotocolhandler')) {
+                    yield match;
+                }
+            }
+        },
+        // This supports obfuscation of the form "foo" -> "^f^o^o"
+        decode: ([cmd]) => cmd.replaceAll(/\^(.)/g, (_, value) => value)
+    },
+    {
+        name: 'Payload/Execute/Tools/zipfldr.dll',
+        description: 'Detects usage of zipfldr.dll to execute other code. This can be used to pivot to stronger payload.',
+        *match(cleaned) {
+            // Match the entire command line, and then check if it includes RouteTheCall argument (used for execution)
+            for (const match of cleaned.matchAll(/\bzipfldr\.dll\b[\s\w\/\\.:\-,]+/gi)) {
+                if (match[0].toLowerCase().includes('routethecall')) {
+                    yield match;
+                }
+            }
+        },
+        // This supports obfuscation of the form "foo" -> "^f^o^o"
+        decode: ([cmd]) => cmd.replaceAll(/\^(.)/g, (_, value) => value)
+    },
+    {
+        name: 'Payload/Execute/Extensions/generic',
         description: 'Detects file extensions of common cross-platform executable formats. This rule tends to generate a lot of noise.',
         match: cleaned => cleaned.matchAll(/\.(?:py|class|jar|war|ear|rb)\b/gi)
     },
     {
-        name: 'Payload/Executable/Windows',
+        name: 'Payload/Execute/Extensions/Windows',
         description: 'Detects file extensions of common Windows-specific executable formats.',
-        match: cleaned => cleaned.matchAll(/\.(?:bat|cmd|ps[12]|vbs|vba|lnk)\b/gi)
+        match: cleaned => cleaned.matchAll(/\.(?:bat|cmd|ps[12]|vb[sa]?|lnk|csx?|ws[cf])\b/gi)
     },
     {
-        name: 'Payload/Executable/Linux',
+        name: 'Payload/Execute/Extensions/Linux',
         description: 'Detects file extensions of common Linux-specific executable formats. This rule tends to generate a lot of noise due to embedded web servers that expose APIs via shell scripts.',
         match: cleaned => cleaned.matchAll(/\.sh\b/gi)
     },
     {
-        name: 'Payload/Downloader/generic',
-        description: 'Detects functions and utilities that are commonly used to download additional payloads.',
-        match: cleaned => cleaned.matchAll(/\b(?:(?:wget|curl|nc|bitsadmin)[\s$]|(?:Net\.WebClient|Invoke-WebRequest)\b)/gi)
+        name: 'Payload/Downloader/generic/Windows',
+        description: 'Detects functions and utilities that are commonly used to download additional payloads on Windows systems.',
+        match: cleaned => cleaned.matchAll(/\b(?:AppInstaller|CertReq|Certutil|cmdl32|Desktopimgdownldr|Diantz|Esentutl|Expand|Extrac32|Findstr|Finger|Ftp|GfxDownloadWrapper|IMEWDBLD|Makecab|MpCmdRun|OneDriveStandaloneUpdater|PrintBrm|Replace|Xwizard|Teams\/update|Squirrel|Net\.WebClient|Invoke-WebRequest|Ieexec)\b/gi)
+    },
+    {
+        name: 'Payload/Downloader/bitsadmin',
+        description: 'Detects usage of the bitsadmin tool to download files.',
+        *match(cleaned) {
+            // Match the entire command line, and then check if it includes the /addfile switch (used for downloading)
+            for (const match of cleaned.matchAll(/\bbitsadmin\b[\s\w\/\\.:\-]+/gi)) {
+                if (match[0].toLowerCase().includes('/addfile')) {
+                    yield match;
+                }
+            }
+        }
+    },
+    {
+        name: 'Payload/Downloader/certoc',
+        description: 'Detects usage of the CertOC tool to download files.',
+        *match(cleaned) {
+            // Match the entire command line, and then check if it includes the -GetCACAPS switch (used for downloading)
+            for (const match of cleaned.matchAll(/\bcertoc\b[\s\w\/\\.:\-]+/gi)) {
+                if (match[0].toLowerCase().includes('-getcacaps')) {
+                    yield match;
+                }
+            }
+        }
+    },
+    {
+        name: 'Payload/Downloader/xwizard',
+        description: 'Detects usage of the XWizard tool to download files.',
+        *match(cleaned) {
+            // Match the entire command line, and then check if it references the "RemoteApp and Desktop Connections" wizard which is actually used for downloading
+            for (const match of cleaned.matchAll(/\bxwizard\b[\s\w\/\\.:\-]+/gi)) {
+                const cmd = match[0].toLowerCase();
+                if (cmd.includes('runwizard') && cmd.includes('{7940acf8-60ba-4213-a7c3-f3b400ee266d}')) {
+                    yield match;
+                }
+            }
+        }
+    },
+    {
+        name: 'Payload/Execute/Tools/squirrel',
+        description: 'Detects usage of the squirrel tool (MS Teams updater) to download files.',
+        *match(cleaned) {
+            // Match the entire command line, and then check if it includes the --download switch (used for downloading)
+            for (const match of cleaned.matchAll(/\b(?:squirrel|update)\b[\s\w\/\\.:\-]+/gi)) {
+                if (match[0].toLowerCase().includes('--download')) {
+                    yield match;
+                }
+            }
+        }
+    },
+    {
+        name: 'Payload/Downloader/Linux',
+        description: 'Detects functions and utilities that are commonly used to download additional payloads on Linux systems.',
+        match: cleaned => cleaned.matchAll(/\b(?:wget|curl|nc)[\s$]/gi)
     },
     {
         name: 'Payload/Downloader/netcat',
@@ -65,6 +190,11 @@ export const allRules: readonly Rule[] = [
         name: 'Payload/Downloader/curl',
         description: 'Detects calls to curl, which is commonly used to download payloads on Linux servers. This rule will attempt to capture all arguments including the target URL to assist further analysis.',
         match: cleaned => cleaned.matchAll(/\bcurl(?:\s+[^&|;>\s]+)*\s+[^&|;\s>]+(?:\s+[^&|;\s>]+)*/gi)
+    },
+    {
+        name: 'Payload/Stealth/Hiding',
+        description: 'Detects attempts to hide activity by manipulating commands and tools.',
+        match: cleaned => cleaned.matchAll(/\bWsl\b/gi)
     },
     {
         name: 'Payload/Stealth/Log Tampering',

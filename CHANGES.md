@@ -3,9 +3,26 @@
     * 2.3.0 - xxxx-xx-xx
       * `--rule-desc`, `--rule-cve`, and `--tsv-header` are on by default
       * Raw output is moved to the end of the line
+      * Split `Payload/Downloader/generic` into `Payload/Downloader/generic/Windows` and `Payload/Downloader/generic/Linux`
+      * Add strings from https://lolbas-project.github.io/
+        * `Payload/Downloader/generic/Windows`
+        * `Payload/Execute/Tools/bitsadmin`
+        * `Payload/Execute/Tools/certoc`
+        * `Payload/Execute/Tools/squirrel`
+        * `Payload/Execute/Tools/url.dll`
+        * `Payload/Execute/Tools/zipfldr.dll`
+        * `Payload/Downloader/bitsadmin`
+        * `Payload/Downloader/certoc`
+        * `Payload/Downloader/xwizard`
+        * `Payload/Downloader/squirrel`
+      * Split `Payload/generic/Eval` into `Payload/Execute/Tools/generic/Windows`, `Payload/Execute/Tools/generic/Linux`, and `Payload/Execute/Functions/generic`
+      * Rename `Payload/Executable/*` to `Payload/Execute/Extensions/*`
       * Add `Payload/Stealth/Log Tampering`
+      * Add `Payload/Stealth/Hiding`
       * Match more filenames in `Malware/Mozi`
+      * Match more script runtimes in `Payload/Shell/Windows`
       * Fix overzealous matching in `Payload/Downloader/generic`
+      * Simplify `Payload/Shell/Linux`, `Payload/Shell/Windows`, and `Payload/Execute/Functions/generic` by using `/b` at the end
       * Simplify `Vulnerability/generic/traversal` regex by only matching the part with . and /
     * 2.2.0 - 2022-06-17
       * Emit TSV header
