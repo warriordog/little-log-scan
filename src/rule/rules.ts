@@ -327,6 +327,142 @@ export const allRules: readonly Rule[] = [
         match: cleaned => cleaned.matchAll(/\/wp-content\/plugins\/recent-backups\/download-file\.php/gi)
     },
     {
+        name: 'Vulnerability/Wordpress/plugin/user-photo/v0.9.4/CVE-2013-1916 Arbitrary File Upload',
+        description: 'Wordpress plugin user-photo versions 0.9.4 and older are vulnerable to arbitrary file upload due to lack of validation on uploaded images.',
+        links: [
+            'https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2013-1916',
+            'https://www.exploit-db.com/exploits/16181'
+        ],
+        cve: 'CVE-2013-1916',
+        match: cleaned => cleaned.matchAll(/\bwp-content\/uploads\/userphoto\b/gi)
+    },
+    {
+        name: 'Vulnerability/Wordpress/plugin/simple-ads-manager/v2.9.8.125/CVE-2017-20095 Object Injection',
+        description: 'Wordpress plugin simple-ads-manager version 2.9.8.125 and older are vulnerable to Object Injection via untrusted deserialization. This can potentially lead to RCE.',
+        links: [
+            'https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-20095',
+            'https://seclists.org/fulldisclosure/2017/Feb/80',
+            'https://sumofpwn.nl/advisory/2016/simple_ads_manager_wordpress_plugin_unauthenticated_php_object_injection_vulnerability.html'
+        ],
+        cve: 'CVE-2017-20095',
+        match: cleaned => cleaned.matchAll(/\/sam-ajax-loader\.php\b/gi)
+    },
+    {
+        name: 'Vulnerability/Wordpress/plugin/new-stat-plugin/v1.2.4/CVE-2017-20094 XSS',
+        description: 'Wordpress plugin new-stat-plugin version 1.2.4 and older are vulnerable to XSS through the page URL and referer header. Since the vulnerability can be triggered from any page, this rule matches the pages where the injected script can be triggered.',
+        links: [
+            'https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-20094',
+            'https://sumofpwn.nl/advisory/2016/persistent_cross_site_scripting_in_the_wordpress_newstatpress_plugin.html'
+        ],
+        cve: 'CVE-2017-20094',
+        match: cleaned => cleaned.matchAll(/\/wp-admin\/admin\.php\?[\w%_.\-=&\\\/]*page=nsp_(?:main|visits)/gi)
+    },
+    {
+        name: 'Vulnerability/Prison Management System/v1.0/CVE-2022-32391 SQLi',
+        description: 'Prison Management System version 1.0 and older are vulnerable to SQL injection via view_action.php.',
+        links: [ 'https://github.com/Dyrandy/BugBounty/blob/main/pms/cve-2022-32391.md' ],
+        cve: 'CVE-2022-32391',
+        match: cleaned => cleaned.matchAll(/\bpms\/admin\/actions\/view_action\.php\b/gi)
+    },
+    {
+        name: 'Vulnerability/Prison Management System/v1.0/CVE-2022-32392 SQLi',
+        description: 'Prison Management System version 1.0 and older are vulnerable to SQL injection via manage_action.php.',
+        links: [ 'https://github.com/Dyrandy/BugBounty/blob/main/pms/cve-2022-32392.md' ],
+        cve: 'CVE-2022-32392',
+        match: cleaned => cleaned.matchAll(/\bpms\/admin\/actions\/manage_action\.php\b/gi)
+    },
+    {
+        name: 'Vulnerability/Prison Management System/v1.0/CVE-2022-32393 SQLi',
+        description: 'Prison Management System version 1.0 and older are vulnerable to SQL injection via view_cell.php.',
+        links: [ 'https://github.com/Dyrandy/BugBounty/blob/main/pms/cve-2022-32393.md' ],
+        cve: 'CVE-2022-32393',
+        match: cleaned => cleaned.matchAll(/\bpms\/admin\/cells\/view_cell\.php\b/gi)
+    },
+    {
+        name: 'Vulnerability/Prison Management System/v1.0/CVE-2022-32394 SQLi',
+        description: 'Prison Management System version 1.0 and older are vulnerable to SQL injection via view_inmate.php.',
+        links: [ 'https://github.com/Dyrandy/BugBounty/blob/main/pms/cve-2022-32394.md' ],
+        cve: 'CVE-2022-32394',
+        match: cleaned => cleaned.matchAll(/\bpms\/admin\/inmates\/view_inmate\.php\b/gi)
+    },
+    {
+        name: 'Vulnerability/Prison Management System/v1.0/CVE-2022-32395 SQLi',
+        description: 'Prison Management System version 1.0 and older are vulnerable to SQL injection via manage_crime.php.',
+        links: [ 'https://github.com/Dyrandy/BugBounty/blob/main/pms/cve-2022-32395.md' ],
+        cve: 'CVE-2022-32395',
+        match: cleaned => cleaned.matchAll(/\bpms\/admin\/crimes\/manage_crimes\.php\b/gi)
+    },
+    {
+        name: 'Vulnerability/Prison Management System/v1.0/CVE-2022-32396 SQLi',
+        description: 'Prison Management System version 1.0 and older are vulnerable to SQL injection via manage_visit.php.',
+        links: [ 'https://github.com/Dyrandy/BugBounty/blob/main/pms/cve-2022-32396.md' ],
+        cve: 'CVE-2022-32396',
+        match: cleaned => cleaned.matchAll(/\bpms\/admin\/visits\/manage_visit\.php\b/gi)
+    },
+    {
+        name: 'Vulnerability/Prison Management System/v1.0/CVE-2022-32397 SQLi',
+        description: 'Prison Management System version 1.0 and older are vulnerable to SQL injection via view_visit.php.',
+        links: [ 'https://github.com/Dyrandy/BugBounty/blob/main/pms/cve-2022-32397.md' ],
+        cve: 'CVE-2022-32397',
+        match: cleaned => cleaned.matchAll(/\bpms\/admin\/visits\/view_visit\.php\b/gi)
+    },
+    {
+        name: 'Vulnerability/Prison Management System/v1.0/CVE-2022-32398 SQLi',
+        description: 'Prison Management System version 1.0 and older are vulnerable to SQL injection via manage_cell.php.',
+        links: [ 'https://github.com/Dyrandy/BugBounty/blob/main/pms/cve-2022-32398.md' ],
+        cve: 'CVE-2022-32398',
+        match: cleaned => cleaned.matchAll(/\bpms\/admin\/cells\/manage_cell\.php\b/gi)
+    },
+    {
+        name: 'Vulnerability/Prison Management System/v1.0/CVE-2022-32399 SQLi',
+        description: 'Prison Management System version 1.0 and older are vulnerable to SQL injection via view_crime.php.',
+        links: [ 'https://github.com/Dyrandy/BugBounty/blob/main/pms/cve-2022-32399.md' ],
+        cve: 'CVE-2022-32399',
+        match: cleaned => cleaned.matchAll(/\bpms\/admin\/crimes\/view_crime\.php\b/gi)
+    },
+    {
+        name: 'Vulnerability/Prison Management System/v1.0/CVE-2022-32400 SQLi',
+        description: 'Prison Management System version 1.0 and older are vulnerable to SQL injection via manage_user.php.',
+        links: [ 'https://github.com/Dyrandy/BugBounty/blob/main/pms/cve-2022-32400.md' ],
+        cve: 'CVE-2022-32400',
+        match: cleaned => cleaned.matchAll(/\bpms\/admin\/user\/manage_user\.php\b/gi)
+    },
+    {
+        name: 'Vulnerability/Prison Management System/v1.0/CVE-2022-32401 SQLi',
+        description: 'Prison Management System version 1.0 and older are vulnerable to SQL injection via manage_privilege.php.',
+        links: [ 'https://github.com/Dyrandy/BugBounty/blob/main/pms/cve-2022-32401.md' ],
+        cve: 'CVE-2022-32401',
+        match: cleaned => cleaned.matchAll(/\bpms\/admin\/inmates\/manage_privilege\.php\b/gi)
+    },
+    {
+        name: 'Vulnerability/Prison Management System/v1.0/CVE-2022-32402 SQLi',
+        description: 'Prison Management System version 1.0 and older are vulnerable to SQL injection via manage_prison.php.',
+        links: [ 'https://github.com/Dyrandy/BugBounty/blob/main/pms/cve-2022-32402.md' ],
+        cve: 'CVE-2022-32402',
+        match: cleaned => cleaned.matchAll(/\bpms\/admin\/prisons\/manage_prison\.php\b/gi)
+    },
+    {
+        name: 'Vulnerability/Prison Management System/v1.0/CVE-2022-32403 SQLi',
+        description: 'Prison Management System version 1.0 and older are vulnerable to SQL injection via manage_record.php.',
+        links: [ 'https://github.com/Dyrandy/BugBounty/blob/main/pms/cve-2022-32403.md' ],
+        cve: 'CVE-2022-32403',
+        match: cleaned => cleaned.matchAll(/\bpms\/admin\/inmates\/manage_record\.php\b/gi)
+    },
+    {
+        name: 'Vulnerability/Prison Management System/v1.0/CVE-2022-32404 SQLi',
+        description: 'Prison Management System version 1.0 and older are vulnerable to SQL injection via manage_inmate.php.',
+        links: [ 'https://github.com/Dyrandy/BugBounty/blob/main/pms/cve-2022-32404.md' ],
+        cve: 'CVE-2022-32404',
+        match: cleaned => cleaned.matchAll(/\bpms\/admin\/inmates\/manage_inmate\.php\b/gi)
+    },
+    {
+        name: 'Vulnerability/Prison Management System/v1.0/CVE-2022-32405 SQLi',
+        description: 'Prison Management System version 1.0 and older are vulnerable to SQL injection via view_prison.php.',
+        links: [ 'https://github.com/Dyrandy/BugBounty/blob/main/pms/cve-2022-32405.md' ],
+        cve: 'CVE-2022-32405',
+        match: cleaned => cleaned.matchAll(/\bpms\/admin\/prisons\/view_prison\.php\b/gi)
+    },
+    {
         name: 'Vulnerability/ColdFusion/v10/Credential Disclosure',
         description: 'ColdFusion 8, 9, and 10 are vulnerable to auth bypass via credential disclosure on /CFIDE/adminapi/customtags/l10n.cfm.',
         links: [ 'https://www.exploit-db.com/exploits/25305' ],
@@ -467,6 +603,34 @@ export const allRules: readonly Rule[] = [
         links: [ 'https://www.cve.org/CVERecord?id=CVE-2014-7169' ],
         cve: 'CVE-2014-7169',
         match: cleaned => cleaned.matchAll(/(\s*)\s*\{\s*(\w+)\s*=\s*>\s*\\/g)
+    },
+    {
+        name: 'Vulnerability/Concrete/v8.5.7/CVE-2022-30117 Arbitrary File Delete',
+        description: 'Concrete CMS versions 9.0 through 9.0.2, version 8.5.7, and older are vulnerable to Arbitrary File Deletion through directory traversal in /ccm/system/file/upload.',
+        links: [ 'https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-30117' ],
+        cve: 'CVE-2022-30117',
+        match: cleaned => cleaned.matchAll(/\bindex\.php\/ccm\/system\/file\/upload\b/gi)
+    },
+    {
+        name: 'Vulnerability/Concrete/v8.5.7/CVE-2022-30118 XSS',
+        description: 'Concrete CMS versions 9.0 through 9.0.2, version 8.5.7, and older are vulnerable to XSS in /dashboard/system/express/entities/forms/save_control/. XSS is only affective against older browsers.',
+        links: [ 'https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-30118' ],
+        cve: 'CVE-2022-30118',
+        match: cleaned => cleaned.matchAll(/\bdashboard\/system\/express\/entities\/forms\/save_control\b/gi)
+    },
+    {
+        name: 'Vulnerability/Concrete/v8.5.7/CVE-2022-30119 XSS',
+        description: 'Concrete CMS versions 9.0 through 9.0.2, version 8.5.7, and older are vulnerable to XSS in /dashboard/reports/logs/view. XSS is only affective against older browsers.',
+        links: [ 'https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-30119' ],
+        cve: 'CVE-2022-30119',
+        match: cleaned => cleaned.matchAll(/\bdashboard\/reports\/logs\/view\b/gi)
+    },
+    {
+        name: 'Vulnerability/Concrete/v8.5.7/CVE-2022-30120 XSS',
+        description: 'Concrete CMS versions 9.0 through 9.0.2, version 8.5.7, and older are vulnerable to XSS in /dashboard/blocks/stacks/view_details. XSS is only affective against older browsers.',
+        links: [ 'https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-30120' ],
+        cve: 'CVE-2022-30120',
+        match: cleaned => cleaned.matchAll(/\bdashboard\/blocks\/stacks\/view_details\b/gi)
     },
 
     {

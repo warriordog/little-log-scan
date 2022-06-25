@@ -19,6 +19,11 @@
       * Rename `Payload/Executable/*` to `Payload/Execute/Extensions/*`
       * Add `Payload/Stealth/Log Tampering`
       * Add `Payload/Stealth/Hiding`
+      * Add `Vulnerability/Concrete/v8.5.7/*`
+      * Add `Vulnerability/Prison Management System/v1.0/*`
+      * Add `Vulnerability/Wordpress/plugin/simple-ads-manager/v2.9.8.125/CVE-2017-20095 Object Injection`
+      * Add `Vulnerability/Wordpress/plugin/new-stat-plugin/v1.2.4/CVE-2017-20094 XSS`
+      * Add `Vulnerability/Wordpress/plugin/user-photo/v0.9.4/CVE-2013-1916 Arbitrary File Upload`
       * Match more filenames in `Malware/Mozi`
       * Match more script runtimes in `Payload/Shell/Windows`
       * Fix overzealous matching in `Payload/Downloader/generic`
