@@ -24,24 +24,23 @@ export const allRules: readonly Rule[] = [
     {
         name: 'Payload/Shell/Windows',
         description: 'Detects Windows scripts by matching common script runtimes and batch commands.',
-        match: cleaned => cleaned.matchAll(/\b(?:powershell|cmd|echo|jscript|cscript|csi|dnx|rcsi)\b/gi)
+        match: cleaned => cleaned.matchAll(/\b(?:powershell|cmd|echo|jscript|cscript|csi|dnx|rcsi)(?=\s)/gi)
     },
     {
         name: 'Payload/Execute/Functions/generic',
         description: 'Detects script functions that are used to execute other code. These are often used in shellcode to pivot to a stronger payload.',
-        match: cleaned => cleaned.matchAll(/\b(?:exec|eval)\b/gi)
+        match: cleaned => cleaned.matchAll(/\b(?:exec|eval|Net\.WebClient|Invoke-WebRequest)\b/gi)
     },
     {
         name: 'Payload/Execute/Tools/generic/Windows',
         description: 'Detects tools, applications, and functions that are used to execute other code. These are often used in shellcode to pivot to a stronger payload.',
-        match: cleaned => cleaned.matchAll(/\b(?:at|Atbroker|cmstp|Diskshadow|Dnscmd|Explorer|Extexport|Forfiles|Ie4uinit|Infdefaultinstall|Installutil|Mavinject|Mmc|Microsoft\.Workflow\.Compiler|Msbuild|Msdt|Mshta|Msiexec|Netsh|Odbcconf|Pcalua|Pcwrun|Pnputil|Presentationhost|Rasautou|Regasm|Register-cimprovider|Regsvcs|Regsvr32|Rundll32|Runonce|Runscripthelper|Schtasks|Scriptrunner|SettingSyncHost|Stordiag|SyncAppvPublishingServer|Ttdinject|Tttracer|Verclsid|Wab|Wlrmdr|Wmic|WorkFolders|wuauclt|Desk\.cpl|(?:Advpack|Ieadvpack|Ieframe|Mshtml|Pcwutl|Setupapi|Shdocvw|Shell32|Syssetup)\.dll|AccCheckConsole|AgentExecutor|Appvlp|Bginfo|Cdb|coregen|DefaultPack|Devtoolslauncher|Dotnet|Dxcap|Mftrace|Msdeploy|msxsl|Procdump|Procdump64|Remote|Sqlps|SQLToolsPS|te|Tracker|VSIISExeLauncher|vsjitdebugger|hh|Ieexec|Xwizard)\b/gi)
-    },
+        match: cleaned => cleaned.matchAll(/\b(?:Atbroker|cmstp|Diskshadow|Dnscmd|Explorer|Extexport|Forfiles|Ie4uinit|Infdefaultinstall|Installutil|Mavinject|Microsoft\.Workflow\.Compiler|Msbuild|Msdt|Mshta|Msiexec|Netsh|Odbcconf|Pcalua|Pcwrun|Pnputil|Presentationhost|Rasautou|Regasm|Register-cimprovider|Regsvcs|Regsvr32|Rundll32|Runonce|Runscripthelper|Schtasks|Scriptrunner|SettingSyncHost|Stordiag|SyncAppvPublishingServer|Ttdinject|Tttracer|Verclsid|Wlrmdr|Wmic|WorkFolders|wuauclt|AccCheckConsole|AgentExecutor|Appvlp|Bginfo|coregen|DefaultPack|Devtoolslauncher|Dotnet|Dxcap|Mftrace|Msdeploy|msxsl|Procdump|Procdump64|Remote|Sqlps|SQLToolsPS|Tracker|VSIISExeLauncher|vsjitdebugger|Ieexec|Xwizard)(?=\s)|\bDesk\.cpl\b|\b(?:Advpack|Ieadvpack|Ieframe|Mshtml|Pcwutl|Setupapi|Shdocvw|Shell32|Syssetup)\.dll\b/gi)    },
     {
         name: 'Payload/Execute/Tools/bitsadmin',
         description: 'Detects usage of the bitsadmin tool to execute other code. This can be used to pivot to stronger payload.',
         *match(cleaned) {
             // Match the entire command line, and then check if it includes the /SetNotifyCmdLine switch (used for execution)
-            for (const match of cleaned.matchAll(/\bbitsadmin\b[\s\w\/\\.:\-]+/gi)) {
+            for (const match of cleaned.matchAll(/\bbitsadmin\s[\s\w\/\\.:\-]+/gi)) {
                 if (match[0].toLowerCase().includes('/setnotifycmdline')) {
                     yield match;
                 }
@@ -53,7 +52,7 @@ export const allRules: readonly Rule[] = [
         description: 'Detects usage of the CertOC tool to execute other code. This can be used to pivot to stronger payload.',
         *match(cleaned) {
             // Match the entire command line, and then check if it includes the -LoadDLL switch (used for execution)
-            for (const match of cleaned.matchAll(/\bcertoc\b[\s\w\/\\.:\-]+/gi)) {
+            for (const match of cleaned.matchAll(/\bcertoc\s[\s\w\/\\.:\-]+/gi)) {
                 if (match[0].toLowerCase().includes('-loaddll')) {
                     yield match;
                 }
@@ -65,7 +64,7 @@ export const allRules: readonly Rule[] = [
         description: 'Detects usage of the squirrel tool (MS Teams updater) to execute other code. This can be used to pivot to stronger payload.',
         *match(cleaned) {
             // Match the entire command line, and then check if it includes the --update, --updateRollback, or --processStart switches (used for execution)
-            for (const match of cleaned.matchAll(/\b(?:squirrel|update)\b[\s\w\/\\.:\-]+/gi)) {
+            for (const match of cleaned.matchAll(/\b(?:squirrel|update)\s[\s\w\/\\.:\-]+/gi)) {
                 const cmd = match[0].toLowerCase();
                 if (cmd.includes('--update') || cmd.includes('--updaterollback') || cmd.includes('--processstart')) {
                     yield match;
@@ -120,14 +119,14 @@ export const allRules: readonly Rule[] = [
     {
         name: 'Payload/Downloader/generic/Windows',
         description: 'Detects functions and utilities that are commonly used to download additional payloads on Windows systems.',
-        match: cleaned => cleaned.matchAll(/\b(?:AppInstaller|CertReq|Certutil|cmdl32|Desktopimgdownldr|Diantz|Esentutl|Expand|Extrac32|Findstr|Finger|Ftp|GfxDownloadWrapper|IMEWDBLD|Makecab|MpCmdRun|OneDriveStandaloneUpdater|PrintBrm|Replace|Xwizard|Teams\/update|Squirrel|Net\.WebClient|Invoke-WebRequest|Ieexec)\b/gi)
+        match: cleaned => cleaned.matchAll(/\b(?:AppInstaller|CertReq|Certutil|cmdl32|Desktopimgdownldr|Diantz|Esentutl|Expand|Extrac32|Findstr|Finger|Ftp|GfxDownloadWrapper|IMEWDBLD|Makecab|MpCmdRun|OneDriveStandaloneUpdater|PrintBrm|Replace|Xwizard|Teams\/update|Squirrel|Ieexec)(?=\s)/gi)
     },
     {
         name: 'Payload/Downloader/bitsadmin',
         description: 'Detects usage of the bitsadmin tool to download files.',
         *match(cleaned) {
             // Match the entire command line, and then check if it includes the /addfile switch (used for downloading)
-            for (const match of cleaned.matchAll(/\bbitsadmin\b[\s\w\/\\.:\-]+/gi)) {
+            for (const match of cleaned.matchAll(/\bbitsadmin\s[\s\w\/\\.:\-]+/gi)) {
                 if (match[0].toLowerCase().includes('/addfile')) {
                     yield match;
                 }
@@ -139,7 +138,7 @@ export const allRules: readonly Rule[] = [
         description: 'Detects usage of the CertOC tool to download files.',
         *match(cleaned) {
             // Match the entire command line, and then check if it includes the -GetCACAPS switch (used for downloading)
-            for (const match of cleaned.matchAll(/\bcertoc\b[\s\w\/\\.:\-]+/gi)) {
+            for (const match of cleaned.matchAll(/\bcertoc\s[\s\w\/\\.:\-]+/gi)) {
                 if (match[0].toLowerCase().includes('-getcacaps')) {
                     yield match;
                 }
@@ -151,7 +150,7 @@ export const allRules: readonly Rule[] = [
         description: 'Detects usage of the XWizard tool to download files.',
         *match(cleaned) {
             // Match the entire command line, and then check if it references the "RemoteApp and Desktop Connections" wizard which is actually used for downloading
-            for (const match of cleaned.matchAll(/\bxwizard\b[\s\w\/\\.:\-]+/gi)) {
+            for (const match of cleaned.matchAll(/\bxwizard\s[\s\w\/\\.:\-]+/gi)) {
                 const cmd = match[0].toLowerCase();
                 if (cmd.includes('runwizard') && cmd.includes('{7940acf8-60ba-4213-a7c3-f3b400ee266d}')) {
                     yield match;
@@ -164,7 +163,7 @@ export const allRules: readonly Rule[] = [
         description: 'Detects usage of the squirrel tool (MS Teams updater) to download files.',
         *match(cleaned) {
             // Match the entire command line, and then check if it includes the --download switch (used for downloading)
-            for (const match of cleaned.matchAll(/\b(?:squirrel|update)\b[\s\w\/\\.:\-]+/gi)) {
+            for (const match of cleaned.matchAll(/\b(?:squirrel|update)\s[\s\w\/\\.:\-]+/gi)) {
                 if (match[0].toLowerCase().includes('--download')) {
                     yield match;
                 }
